@@ -40,17 +40,42 @@ def save_file():
     save_text = filedialog.asksaveasfilename(
         initialdir="/",
         title="Save your file",
+        defaultextension="*.",
         filetypes=[
+            ("Text files","*.txt"),
+            ("Html files","*.html"),
             ("All files","*.*")
         ]
     )
-    text.get("1.0",END)
-    #create file
-    save_fi = open(save_text,"w+")
-    save_fi.write()
-    save_fi.close()
 
-    
+    #Save file
+    save_text = open(save_text,'w')
+    #read the file from main text widget
+    get_file = text.get(1.0,END)
+    save_text.write(get_file)
+    #close the file
+    save_text.close()
+
+    def save_as_file():
+        save_text = filedialog.asksaveasfilename(
+        initialdir="/",
+        title="Save your file",
+        defaultextension="*.",
+        filetypes=[
+            ("Text files","*.txt"),
+            ("Html files","*.html"),
+            ("All files","*.*")
+        ]
+    )
+
+    #Save file
+    save_text = open(save_text,'w')
+    #read the file from main text widget
+    get_file = text.get(1.0,END)
+    save_text.write(get_file)
+    #close the file
+    save_text.close()
+
 
 def quiit():
     root.quit()
@@ -74,7 +99,7 @@ menu_bar.add_cascade(label="File", menu=sub_menu)
 sub_menu.add_command(label="New", command=new_file)
 sub_menu.add_command(label="Open", command=open_file)
 sub_menu.add_command(label="Save" , command=save_file)
-sub_menu.add_command(label="Save As")
+sub_menu.add_command(label="Save As", command=save_as_file)
 sub_menu.add_separator()
 sub_menu.add_command(label="Exit" ,command=quiit)
 
