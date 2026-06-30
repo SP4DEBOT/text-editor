@@ -13,9 +13,13 @@ root.title("Text-Editor")
 main_frame = Frame(root)
 main_frame.pack(pady=5)
 
+global current_file
+current_file = False
 
 
 def new_file():
+    global current_file
+    current_file = False
     text.delete("1.0",END) #deletes already existed text
 
 
@@ -28,6 +32,9 @@ def open_file():
         title="open your file",
         filetypes=[("Text files","*.txt"),("Html files","*.html"),("All files","*.*")])
     
+    global current_file
+    current_file = text_file
+    
     text_file = open(text_file,'r')
     #Read contents
     read_file = text_file.read()
@@ -37,6 +44,22 @@ def open_file():
     text_file.close()
 
 def save_file():
+    global current_file
+    if current_file:
+        #Save file
+        #read the file from main text widget
+        get_file = text.get(1.0,END)
+        save_text = open(current_file,'w')
+        save_text.write(get_file)
+        #close the file
+        save_text.close()
+    else:
+        save_asfile()
+
+
+
+
+def save_asfile():
     save_text = filedialog.asksaveasfilename(
         initialdir="/",
         title="Save your file",
@@ -50,31 +73,13 @@ def save_file():
 
     #Save file
     save_text = open(save_text,'w')
-    #read the file from main text widget
+    #read the file and get the content from main text widget
     get_file = text.get(1.0,END)
     save_text.write(get_file)
     #close the file
     save_text.close()
 
-    def save_as_file():
-        save_text = filedialog.asksaveasfilename(
-        initialdir="/",
-        title="Save your file",
-        defaultextension="*.",
-        filetypes=[
-            ("Text files","*.txt"),
-            ("Html files","*.html"),
-            ("All files","*.*")
-        ]
-    )
-
-    #Save file
-    save_text = open(save_text,'w')
-    #read the file from main text widget
-    get_file = text.get(1.0,END)
-    save_text.write(get_file)
-    #close the file
-    save_text.close()
+    
 
 
 def quiit():
@@ -99,7 +104,7 @@ menu_bar.add_cascade(label="File", menu=sub_menu)
 sub_menu.add_command(label="New", command=new_file)
 sub_menu.add_command(label="Open", command=open_file)
 sub_menu.add_command(label="Save" , command=save_file)
-sub_menu.add_command(label="Save As", command=save_as_file)
+sub_menu.add_command(label="Save As", command=save_asfile)
 sub_menu.add_separator()
 sub_menu.add_command(label="Exit" ,command=quiit)
 
