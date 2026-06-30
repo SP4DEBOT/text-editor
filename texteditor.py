@@ -32,10 +32,16 @@ def open_file():
         title="open your file",
         filetypes=[("Text files","*.txt"),("Html files","*.html"),("All files","*.*")])
     
+    
     global current_file
     current_file = text_file
     
+
+
     text_file = open(text_file,'r')
+    name = text_file
+   # status_bar.config(text=f'Saved : {name}')
+    #root.title(text=f'Opened: {name}')
     #Read contents
     read_file = text_file.read()
     #Clear the widget
@@ -50,6 +56,9 @@ def save_file():
         #read the file from main text widget
         get_file = text.get(1.0,END)
         save_text = open(current_file,'w')
+        name = current_file
+        status_bar.config(text=f'Saved : {name}')
+
         save_text.write(get_file)
         #close the file
         save_text.close()
@@ -95,6 +104,10 @@ text.pack()
 #Menu Bar
 menu_bar = Menu(root,title="Menu")
 root.config(menu=menu_bar)
+
+#status Bar
+status_bar = Label(root,text="Ready",padx=5)
+status_bar.pack(fill='x',side="bottom")
 
 #Sub menu
 sub_menu = Menu(menu_bar,tearoff=False)
