@@ -38,10 +38,11 @@ def open_file():
     
 
 
-    text_file = open(text_file,'r')
+    
     name = text_file
-   # status_bar.config(text=f'Saved : {name}')
+    status_bar.config(text=f'Opened file : {name}')
     #root.title(text=f'Opened: {name}')
+    text_file = open(text_file,'r')
     #Read contents
     read_file = text_file.read()
     #Clear the widget
@@ -88,7 +89,33 @@ def save_asfile():
     #close the file
     save_text.close()
 
+def cut_text():
+    try:
+        #Get the starting and ending of selected text
+        start = text.index("sel.first")
+        end=text.index("sel.last")
+        #select the text
+        selected_text=text.get(start,end)
+        #clear the clipboard
+        root.clipboard_clear()
+        #append the deleted text to clipboard
+        root.clipboard_append(selected_text)
+
+        text.delete(start,end)
+    except TclError:
+        #if no text is selected
+        pass
     
+def paste_text():
+    try:
+        #Get the text from clipboard
+        clipboard_text = root.clipboard_get()
+        #INSERT==>Current cursor place
+        #insert text 
+        text.insert(INSERT,clipboard_text)
+
+    except TclError:
+        pass
 
 
 def quiit():
@@ -128,9 +155,9 @@ menu_bar.add_cascade(label="Edit", menu=edit_menu)
 
 edit_menu.add_command(label="Undo")
 edit_menu.add_separator()
-edit_menu.add_command(label="Cut")
+edit_menu.add_command(label="Cut",command=cut_text)
 edit_menu.add_command(label="Copy")
-edit_menu.add_command(label="Paste")
+edit_menu.add_command(label="Paste",command=paste_text)
 edit_menu.add_command(label="Delete")
 
 
